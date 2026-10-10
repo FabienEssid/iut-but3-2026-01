@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight } from "lucide-react";
 import { YugiohCard } from "./components/YugiohCard";
 import { RadioFilter } from "./components/RadioFilter";
-import { yugiohCards } from "./constants/yugiohCards";
+import { getYugiohCards } from "./services/yugiohCards";
+import type { YugiohCardProps } from "./types/YugiohCard";
+import type { YugiohCardsResponse } from "./types/YugiohCardsApi";
 
 type AttributeFilterValue = "ALL" | "LIGHT" | "DARK";
 
@@ -15,7 +17,11 @@ function App() {
 
   const [attributeFilter, setAttributeFilter] = useState<AttributeFilterValue>("ALL");
   const [nameSearch, setNameSearch] = useState("");
+  const [page, setPage] = useState(1);
   const [favoriteCards, setFavoriteCards] = useState<string[]>([]);
+  const [cards, setCards] = useState<YugiohCardProps[]>([]);
+  const [meta, setMeta] = useState<YugiohCardsResponse["meta"] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const toggleFavorite = (cardTitle: string) => {
     setFavoriteCards((previousFavorites) =>
@@ -25,11 +31,40 @@ function App() {
     );
   };
 
-  const filteredCards = yugiohCards.filter(
-    (card) =>
-      (attributeFilter === "ALL" || card.attribute === attributeFilter) &&
-      card.title.toLowerCase().includes(nameSearch.toLowerCase()),
-  );
+  const handleAttributeFilterChange = (value: AttributeFilterValue) => {
+    setAttributeFilter(value);
+    setPage(1);
+  };
+
+  const handleNameSearchChange = (value: string) => {
+    setNameSearch(value);
+    setPage(1);
+  };
+
+  const resetFilters = () => {
+    setAttributeFilter("ALL");
+    setNameSearch("");
+    setPage(1);
+  };
+
+  useEffect(() => {
+    let isCancelled = false;
+    setIsLoading(true);
+
+    getYugiohCards({ attributeFilter, nameSearch, page }).then((response) => {
+      if (!isCancelled) {
+        setCards(response.data);
+        setMeta(response.meta);
+        setIsLoading(false);
+      }
+    });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [attributeFilter, nameSearch, page]);
+
+  const totalPages = meta ? Math.max(1, Math.ceil(meta.totalCount / meta.pageSize)) : 1;
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -44,7 +79,7 @@ function App() {
                 name="attribute-filter"
                 value={filter.value}
                 checked={attributeFilter === filter.value}
-                onChange={() => setAttributeFilter(filter.value)}
+                onChange={() => handleAttributeFilterChange(filter.value)}
               >
                 {filter.label}
               </RadioFilter>
@@ -57,20 +92,19 @@ function App() {
         <input
           type="text"
           value={nameSearch}
-          onChange={(e) => setNameSearch(e.target.value)}
+          onChange={(e) => handleNameSearchChange(e.target.value)}
           placeholder="Rechercher une carte..."
           className="bg-white w-64 rounded border border-slate-300 px-3 py-2"
         />
 
-        {filteredCards.length === 0 ? (
+        {isLoading ? (
+          <p className="text-center text-slate-600">Chargement...</p>
+        ) : cards.length === 0 ? (
           <div className="flex flex-col items-center">
             <p>Aucune carte trouvée. Veuillez réessayer avec de nouveaux filtres.</p>
             <button
               type="button"
-              onClick={() => {
-                setAttributeFilter("ALL");
-                setNameSearch("");
-              }}
+              onClick={resetFilters}
               className="cursor-pointer mt-2 rounded bg-slate-800 px-4 py-2 font-semibold text-white hover:bg-slate-700"
             >
               Réinitialiser les filtres
@@ -78,7 +112,7 @@ function App() {
           </div>
         ) : (
           <div className="flex flex-wrap items-start justify-start gap-6">
-            {filteredCards.map((card) => (
+            {cards.map((card) => (
               <YugiohCard
                 key={card.title}
                 {...card}
@@ -92,26 +126,36 @@ function App() {
         <div className="flex items-center justify-center gap-2">
           <button
             type="button"
-            className="cursor-pointer rounded border border-slate-300 bg-white p-2 hover:bg-slate-200"
+            onClick={() => setPage(1)}
+            disabled={page === 1}
+            className="cursor-pointer rounded border border-slate-300 bg-white p-2 hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <ChevronsLeft className="h-4 w-4" />
           </button>
           <button
             type="button"
-            className="cursor-pointer rounded border border-slate-300 bg-white p-2 hover:bg-slate-200"
+            onClick={() => setPage((currentPage) => Math.max(1, currentPage - 1))}
+            disabled={page === 1}
+            className="cursor-pointer rounded border border-slate-300 bg-white p-2 hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
-          <span className="px-2 text-sm font-semibold text-slate-600">Page 1</span>
+          <span className="px-2 text-sm font-semibold text-slate-600">
+            Page {page} / {totalPages}
+          </span>
           <button
             type="button"
-            className="cursor-pointer rounded border border-slate-300 bg-white p-2 hover:bg-slate-200"
+            onClick={() => setPage((currentPage) => Math.min(totalPages, currentPage + 1))}
+            disabled={page === totalPages}
+            className="cursor-pointer rounded border border-slate-300 bg-white p-2 hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
           <button
             type="button"
-            className="cursor-pointer rounded border border-slate-300 bg-white p-2 hover:bg-slate-200"
+            onClick={() => setPage(totalPages)}
+            disabled={page === totalPages}
+            className="cursor-pointer rounded border border-slate-300 bg-white p-2 hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <ChevronsRight className="h-4 w-4" />
           </button>
