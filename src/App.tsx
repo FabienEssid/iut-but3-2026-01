@@ -3,6 +3,7 @@ import blueEyesImg from "./assets/images/blue-eyes-white-dragon-7485.jpg";
 import darkMagicianImg from "./assets/images/dark-magician-4003.jpg";
 import redEyesImg from "./assets/images/red-eyes-black-dragon-6276.jpg";
 import { YugiohCard } from "./components/YugiohCard";
+import { RadioFilter } from "./components/RadioFilter";
 import type { YugiohCardProps } from "./types/YugiohCard";
 
 function App() {
@@ -51,33 +52,30 @@ function App() {
 
       <main className="flex flex-1 flex-col gap-6 bg-slate-100 p-4">
         <div className="flex gap-4">
-          <label className="flex items-center gap-1">
-            <input
-              type="radio"
-              name="attribute-filter"
-              checked={attributeFilter === "ALL"}
-              onChange={() => setAttributeFilter("ALL")}
-            />
+          <RadioFilter
+            name="attribute-filter"
+            value="ALL"
+            checked={attributeFilter === "ALL"}
+            onChange={() => setAttributeFilter("ALL")}
+          >
             Tous
-          </label>
-          <label className="flex items-center gap-1">
-            <input
-              type="radio"
-              name="attribute-filter"
-              checked={attributeFilter === "LIGHT"}
-              onChange={() => setAttributeFilter("LIGHT")}
-            />
+          </RadioFilter>
+          <RadioFilter
+            name="attribute-filter"
+            value="LIGHT"
+            checked={attributeFilter === "LIGHT"}
+            onChange={() => setAttributeFilter("LIGHT")}
+          >
             LIGHT
-          </label>
-          <label className="flex items-center gap-1">
-            <input
-              type="radio"
-              name="attribute-filter"
-              checked={attributeFilter === "DARK"}
-              onChange={() => setAttributeFilter("DARK")}
-            />
+          </RadioFilter>
+          <RadioFilter
+            name="attribute-filter"
+            value="DARK"
+            checked={attributeFilter === "DARK"}
+            onChange={() => setAttributeFilter("DARK")}
+          >
             DARK
-          </label>
+          </RadioFilter>
         </div>
 
         <input
