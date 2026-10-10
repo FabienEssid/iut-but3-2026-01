@@ -25,6 +25,10 @@
     @apply text-sm text-slate-600;
   }
 
+  .card-sold-out {
+    @apply w-fit rounded bg-red-600 px-2 py-0.5 text-xs font-bold text-white;
+  }
+
   .card-stats {
     @apply mt-2 flex justify-between;
   }

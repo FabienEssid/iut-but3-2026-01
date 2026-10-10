@@ -13,6 +13,7 @@ function App() {
       type: "Normal Monster / Dragon",
       attack: 3000,
       defense: 2500,
+      isSoldOut: false,
     },
     {
       image: darkMagicianImg,
@@ -21,6 +22,7 @@ function App() {
       type: "Normal Monster / Spellcaster",
       attack: 2500,
       defense: 2100,
+      isSoldOut: true,
     },
     {
       image: redEyesImg,
@@ -29,6 +31,7 @@ function App() {
       type: "Normal Monster / Dragon",
       attack: 2400,
       defense: 2000,
+      isSoldOut: false,
     },
   ];
 

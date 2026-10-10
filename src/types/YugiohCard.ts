@@ -5,4 +5,5 @@ export type YugiohCardProps = {
   type: string;
   attack: number;
   defense: number;
+  isSoldOut: boolean;
 };

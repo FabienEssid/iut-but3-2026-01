@@ -1,6 +1,6 @@
 import type { YugiohCardProps } from "../types/YugiohCard";
 
-export const YugiohCard = ({ image, title, attribute, type, attack, defense }: YugiohCardProps) => {
+export const YugiohCard = ({ image, title, attribute, type, attack, defense, isSoldOut }: YugiohCardProps) => {
   return (
     <div className="card">
       <div className="card-header">
@@ -13,7 +13,7 @@ export const YugiohCard = ({ image, title, attribute, type, attack, defense }: Y
       <p className="card-type">{type}</p>
 
       <div className="card-stats">
-        <span />
+        {isSoldOut ? <p className="card-sold-out">Sold Out</p> : <span />}
         <div className="card-stats-values">
           <span>ATK/{attack}</span>
           <span>DEF/{defense}</span>
