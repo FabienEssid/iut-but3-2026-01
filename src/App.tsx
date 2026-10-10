@@ -6,7 +6,15 @@ import { YugiohCard } from "./components/YugiohCard";
 import { RadioFilter } from "./components/RadioFilter";
 import type { YugiohCardProps } from "./types/YugiohCard";
 
+type AttributeFilterValue = "ALL" | "LIGHT" | "DARK";
+
 function App() {
+  const attributeFilters: { value: AttributeFilterValue; label: string }[] = [
+    { value: "ALL", label: "Tous" },
+    { value: "LIGHT", label: "LIGHT" },
+    { value: "DARK", label: "DARK" },
+  ];
+
   const yugiohCards: YugiohCardProps[] = [
     {
       image: blueEyesImg,
@@ -37,7 +45,7 @@ function App() {
     },
   ];
 
-  const [attributeFilter, setAttributeFilter] = useState<"ALL" | "LIGHT" | "DARK">("ALL");
+  const [attributeFilter, setAttributeFilter] = useState<AttributeFilterValue>("ALL");
   const [nameSearch, setNameSearch] = useState("");
 
   const filteredCards = yugiohCards.filter(
@@ -52,30 +60,17 @@ function App() {
 
       <main className="flex flex-1 flex-col gap-6 bg-slate-100 p-4">
         <div className="flex gap-4">
-          <RadioFilter
-            name="attribute-filter"
-            value="ALL"
-            checked={attributeFilter === "ALL"}
-            onChange={() => setAttributeFilter("ALL")}
-          >
-            Tous
-          </RadioFilter>
-          <RadioFilter
-            name="attribute-filter"
-            value="LIGHT"
-            checked={attributeFilter === "LIGHT"}
-            onChange={() => setAttributeFilter("LIGHT")}
-          >
-            LIGHT
-          </RadioFilter>
-          <RadioFilter
-            name="attribute-filter"
-            value="DARK"
-            checked={attributeFilter === "DARK"}
-            onChange={() => setAttributeFilter("DARK")}
-          >
-            DARK
-          </RadioFilter>
+          {attributeFilters.map((filter) => (
+            <RadioFilter
+              key={filter.value}
+              name="attribute-filter"
+              value={filter.value}
+              checked={attributeFilter === filter.value}
+              onChange={() => setAttributeFilter(filter.value)}
+            >
+              {filter.label}
+            </RadioFilter>
+          ))}
         </div>
 
         <input
