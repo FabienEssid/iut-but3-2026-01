@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight } from "lucide-react";
 import { YugiohCard } from "./components/YugiohCard";
 import { RadioFilter } from "./components/RadioFilter";
 import { yugiohCards } from "./constants/yugiohCards";
@@ -87,6 +88,34 @@ function App() {
             ))}
           </div>
         )}
+
+        <div className="flex items-center justify-center gap-2">
+          <button
+            type="button"
+            className="cursor-pointer rounded border border-slate-300 bg-white p-2 hover:bg-slate-200"
+          >
+            <ChevronsLeft className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            className="cursor-pointer rounded border border-slate-300 bg-white p-2 hover:bg-slate-200"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <span className="px-2 text-sm font-semibold text-slate-600">Page 1</span>
+          <button
+            type="button"
+            className="cursor-pointer rounded border border-slate-300 bg-white p-2 hover:bg-slate-200"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            className="cursor-pointer rounded border border-slate-300 bg-white p-2 hover:bg-slate-200"
+          >
+            <ChevronsRight className="h-4 w-4" />
+          </button>
+        </div>
       </main>
 
       <footer className="bg-slate-800 p-4 text-center text-sm text-white">© 2026 iut-but3-2026-01</footer>
