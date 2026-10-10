@@ -6,7 +6,7 @@
   }
 
   .card-favorite {
-    @apply flex justify-end [&_svg]:h-5 [&_svg]:w-5 [&_svg]:shrink-0 [&_svg]:text-slate-400;
+    @apply flex w-full cursor-pointer justify-end [&_svg]:h-5 [&_svg]:w-5 [&_svg]:shrink-0;
   }
 
   .card-header {

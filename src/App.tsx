@@ -47,6 +47,15 @@ function App() {
 
   const [attributeFilter, setAttributeFilter] = useState<AttributeFilterValue>("ALL");
   const [nameSearch, setNameSearch] = useState("");
+  const [favoriteCards, setFavoriteCards] = useState<string[]>([]);
+
+  const toggleFavorite = (cardTitle: string) => {
+    setFavoriteCards((previousFavorites) =>
+      previousFavorites.includes(cardTitle)
+        ? previousFavorites.filter((title) => title !== cardTitle)
+        : [...previousFavorites, cardTitle],
+    );
+  };
 
   const filteredCards = yugiohCards.filter(
     (card) =>
@@ -59,18 +68,22 @@ function App() {
       <header className="bg-slate-800 p-4 text-center text-xl font-bold text-white">iut-but3-2026-01</header>
 
       <main className="flex flex-1 flex-col gap-6 bg-slate-100 p-4">
-        <div className="flex gap-4">
-          {attributeFilters.map((filter) => (
-            <RadioFilter
-              key={filter.value}
-              name="attribute-filter"
-              value={filter.value}
-              checked={attributeFilter === filter.value}
-              onChange={() => setAttributeFilter(filter.value)}
-            >
-              {filter.label}
-            </RadioFilter>
-          ))}
+        <div className="flex items-center justify-between">
+          <div className="flex gap-4">
+            {attributeFilters.map((filter) => (
+              <RadioFilter
+                key={filter.value}
+                name="attribute-filter"
+                value={filter.value}
+                checked={attributeFilter === filter.value}
+                onChange={() => setAttributeFilter(filter.value)}
+              >
+                {filter.label}
+              </RadioFilter>
+            ))}
+          </div>
+
+          <p className="text-sm font-semibold text-slate-600">Favoris : {favoriteCards.length}</p>
         </div>
 
         <input
@@ -98,7 +111,12 @@ function App() {
         ) : (
           <div className="flex flex-wrap items-start justify-start gap-6">
             {filteredCards.map((card) => (
-              <YugiohCard key={card.title} {...card} />
+              <YugiohCard
+                key={card.title}
+                {...card}
+                isFavorite={favoriteCards.includes(card.title)}
+                onToggleFavorite={() => toggleFavorite(card.title)}
+              />
             ))}
           </div>
         )}
