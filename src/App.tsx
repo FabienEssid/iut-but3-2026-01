@@ -1,3 +1,4 @@
+import { useState } from "react";
 import blueEyesImg from "./assets/images/blue-eyes-white-dragon-7485.jpg";
 import darkMagicianImg from "./assets/images/dark-magician-4003.jpg";
 import redEyesImg from "./assets/images/red-eyes-black-dragon-6276.jpg";
@@ -35,14 +36,48 @@ function App() {
     },
   ];
 
+  const [attributeFilter, setAttributeFilter] = useState<"ALL" | "LIGHT" | "DARK">("ALL");
+
   return (
     <div className="flex min-h-screen flex-col">
       <header className="bg-slate-800 p-4 text-center text-xl font-bold text-white">iut-but3-2026-01</header>
 
-      <main className="flex flex-1 flex-wrap items-start justify-start gap-6 bg-slate-100 p-4">
-        {yugiohCards.map((card) => (
-          <YugiohCard key={card.title} {...card} />
-        ))}
+      <main className="flex flex-1 flex-col gap-6 bg-slate-100 p-4">
+        <div className="flex gap-4">
+          <label className="flex items-center gap-1">
+            <input
+              type="radio"
+              name="attribute-filter"
+              checked={attributeFilter === "ALL"}
+              onChange={() => setAttributeFilter("ALL")}
+            />
+            Tous
+          </label>
+          <label className="flex items-center gap-1">
+            <input
+              type="radio"
+              name="attribute-filter"
+              checked={attributeFilter === "LIGHT"}
+              onChange={() => setAttributeFilter("LIGHT")}
+            />
+            LIGHT
+          </label>
+          <label className="flex items-center gap-1">
+            <input
+              type="radio"
+              name="attribute-filter"
+              checked={attributeFilter === "DARK"}
+              onChange={() => setAttributeFilter("DARK")}
+            />
+            DARK
+          </label>
+        </div>
+
+        <div className="flex flex-wrap items-start justify-start gap-6">
+          {yugiohCards.map((card) => (
+            <YugiohCard key={card.title} {...card} />
+          ))}
+        </div>
       </main>
 
       <footer className="bg-slate-800 p-4 text-center text-sm text-white">© 2026 iut-but3-2026-01</footer>
