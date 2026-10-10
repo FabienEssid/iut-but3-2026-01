@@ -37,8 +37,13 @@ function App() {
   ];
 
   const [attributeFilter, setAttributeFilter] = useState<"ALL" | "LIGHT" | "DARK">("ALL");
+  const [nameSearch, setNameSearch] = useState("");
 
-  const filteredCards = yugiohCards.filter((card) => attributeFilter === "ALL" || card.attribute === attributeFilter);
+  const filteredCards = yugiohCards.filter(
+    (card) =>
+      (attributeFilter === "ALL" || card.attribute === attributeFilter) &&
+      card.title.toLowerCase().includes(nameSearch.toLowerCase()),
+  );
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -74,6 +79,14 @@ function App() {
             DARK
           </label>
         </div>
+
+        <input
+          type="text"
+          value={nameSearch}
+          onChange={(e) => setNameSearch(e.target.value)}
+          placeholder="Rechercher une carte..."
+          className="bg-white w-64 rounded border border-slate-300 px-3 py-2"
+        />
 
         <div className="flex flex-wrap items-start justify-start gap-6">
           {filteredCards.map((card) => (
