@@ -5,6 +5,10 @@
     @apply w-64 rounded-lg bg-white p-4 shadow-lg;
   }
 
+  .card-favorite {
+    @apply flex justify-end [&_svg]:h-5 [&_svg]:w-5 [&_svg]:shrink-0 [&_svg]:text-slate-400;
+  }
+
   .card-header {
     @apply flex items-start justify-between gap-2;
   }

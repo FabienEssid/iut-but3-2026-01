@@ -1,8 +1,12 @@
+import { HeartIcon } from "lucide-react";
 import type { YugiohCardProps } from "../types/YugiohCard";
 
 export const YugiohCard = ({ image, title, attribute, type, attack, defense, isSoldOut }: YugiohCardProps) => {
   return (
-    <div className="card">
+    <div className="card gap-2">
+      <div className="card-favorite mb-2">
+        <HeartIcon />
+      </div>
       <div className="card-header">
         <span className="card-title">{title}</span>
         <span className="card-attribute">{attribute}</span>
