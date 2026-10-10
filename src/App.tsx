@@ -88,11 +88,27 @@ function App() {
           className="bg-white w-64 rounded border border-slate-300 px-3 py-2"
         />
 
-        <div className="flex flex-wrap items-start justify-start gap-6">
-          {filteredCards.map((card) => (
-            <YugiohCard key={card.title} {...card} />
-          ))}
-        </div>
+        {filteredCards.length === 0 ? (
+          <div className="flex flex-col items-center">
+            <p>Aucune carte trouvée. Veuillez réessayer avec de nouveaux filtres.</p>
+            <button
+              type="button"
+              onClick={() => {
+                setAttributeFilter("ALL");
+                setNameSearch("");
+              }}
+              className="cursor-pointer mt-2 rounded bg-slate-800 px-4 py-2 font-semibold text-white hover:bg-slate-700"
+            >
+              Réinitialiser les filtres
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-wrap items-start justify-start gap-6">
+            {filteredCards.map((card) => (
+              <YugiohCard key={card.title} {...card} />
+            ))}
+          </div>
+        )}
       </main>
 
       <footer className="bg-slate-800 p-4 text-center text-sm text-white">© 2026 iut-but3-2026-01</footer>
