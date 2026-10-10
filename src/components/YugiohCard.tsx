@@ -1,11 +1,4 @@
-type YugiohCardProps = {
-  image: string;
-  title: string;
-  attribute: string;
-  type: string;
-  attack: number;
-  defense: number;
-};
+import type { YugiohCardProps } from "../types/YugiohCard";
 
 export const YugiohCard = ({ image, title, attribute, type, attack, defense }: YugiohCardProps) => {
   return (
