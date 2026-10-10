@@ -38,6 +38,8 @@ function App() {
 
   const [attributeFilter, setAttributeFilter] = useState<"ALL" | "LIGHT" | "DARK">("ALL");
 
+  const filteredCards = yugiohCards.filter((card) => attributeFilter === "ALL" || card.attribute === attributeFilter);
+
   return (
     <div className="flex min-h-screen flex-col">
       <header className="bg-slate-800 p-4 text-center text-xl font-bold text-white">iut-but3-2026-01</header>
@@ -74,7 +76,7 @@ function App() {
         </div>
 
         <div className="flex flex-wrap items-start justify-start gap-6">
-          {yugiohCards.map((card) => (
+          {filteredCards.map((card) => (
             <YugiohCard key={card.title} {...card} />
           ))}
         </div>
